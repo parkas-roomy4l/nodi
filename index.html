@@ -3,243 +3,294 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>NoDi — North of Dimes Square</title>
-<meta name="description" content="NoDi. North of Dimes Square. nyc's most electric micro-neighborhood.">
-<meta property="og:title" content="NoDi — North of Dimes Square">
-<meta property="og:description" content="nyc's most electric micro-neighborhood.">
+<title>NoDi — North of Dimes</title>
+<meta name="description" content="NoDi. North of Dimes. NYC's most electric micro-neighborhood.">
+<meta property="og:title" content="NoDi — North of Dimes">
+<meta property="og:description" content="NYC's most electric micro-neighborhood.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nodi.nyc">
-<meta name="theme-color" content="#08090B">
+<meta name="theme-color" content="#2E302B">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Permanent+Marker&family=IBM+Plex+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
   :root{
-    --void:#08090B;
-    --bone:#E7E5DD;
-    --soft:#CFCDC4;
-    --ash:#6A6E73;
-    --dim:#43474C;
-    --faint:#1B1D20;
-    --signal:#BFA471;
-    --serif:"Newsreader",Georgia,serif;
-    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
+    --surface:#2E302B;
+    --paper:#F4F0E6;
+    --paper-aged:#E9E2D0;
+    --ink:#17181A;
+    --red:#D9342B;
+    --orange:#E8920A;
+    --yellow:#FFD23E;
+    --blue:#2456A8;
+    --grime:rgba(0,0,0,.45);
+    --poster:"Archivo Black",Impact,sans-serif;
+    --marker:"Permanent Marker",cursive;
+    --mono:"IBM Plex Mono",ui-monospace,monospace;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   body{
-    margin:0;background:var(--void);color:var(--bone);
-    font-family:var(--serif);font-size:19px;line-height:1.72;
-    font-optical-sizing:auto;-webkit-font-smoothing:antialiased;
-    text-rendering:optimizeLegibility;
+    margin:0;color:var(--ink);
+    font-family:var(--mono);font-size:16px;line-height:1.65;
+    background:
+      radial-gradient(1200px 600px at 80% -10%, rgba(255,255,255,.06), transparent 60%),
+      radial-gradient(900px 900px at -10% 110%, rgba(0,0,0,.5), transparent 60%),
+      radial-gradient(700px 500px at 110% 80%, rgba(0,0,0,.4), transparent 60%),
+      var(--surface);
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
   }
-  a{color:inherit}
-  ::selection{background:var(--signal);color:var(--void)}
-  .wrap{max-width:680px;margin:0 auto;padding:0 28px}
+  /* grime + noise over the whole surface */
+  body::before{
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.16'/></svg>");
+    mix-blend-mode:overlay;
+  }
+  body::after{ /* drips + scuffs */
+    content:"";position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.5;
+    background:
+      linear-gradient(rgba(0,0,0,.35),transparent 4%) ,
+      radial-gradient(140px 30px at 20% 12%, rgba(0,0,0,.25), transparent 70%),
+      radial-gradient(220px 40px at 75% 55%, rgba(0,0,0,.22), transparent 70%),
+      radial-gradient(180px 36px at 35% 85%, rgba(0,0,0,.25), transparent 70%);
+  }
+  ::selection{background:var(--yellow);color:var(--ink)}
 
-  .label{font-family:var(--mono);font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:var(--signal);font-weight:500}
-  .label.dim{color:var(--ash)}
+  .col{position:relative;z-index:2;max-width:740px;margin:0 auto;padding:40px 22px 90px}
 
-  /* top bar */
-  .bar{position:fixed;inset:0 0 auto 0;z-index:40;background:linear-gradient(var(--void) 55%,rgba(8,9,11,0));}
-  .bar .wrap{display:flex;justify-content:space-between;align-items:center;height:56px}
-  .bar a{text-decoration:none}
-  .mark{font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:0.12em}
-  .mark b{color:var(--signal);font-weight:600}
-  .barlinks{display:flex;gap:24px;font-family:var(--mono);font-size:11px;letter-spacing:0.16em;color:var(--ash);text-transform:uppercase}
-  .barlinks a{text-decoration:none;transition:color .15s}
-  .barlinks a:hover{color:var(--bone)}
-  @media(max-width:600px){.barlinks{display:none}}
+  /* ---------- sticker primitives ---------- */
+  .stk{
+    position:relative;background:var(--paper);color:var(--ink);
+    padding:26px 26px 28px;margin:34px 0;
+    border-radius:8px;
+    box-shadow:0 1px 0 rgba(255,255,255,.18) inset, 0 10px 24px rgba(0,0,0,.55), 0 2px 5px rgba(0,0,0,.5);
+  }
+  .stk::before{ /* worn sticker grime on edges */
+    content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    box-shadow:inset 0 0 26px rgba(60,50,30,.18);
+  }
+  .stk::after{ /* peeling corner */
+    content:"";position:absolute;right:-2px;bottom:-2px;width:26px;height:26px;
+    background:linear-gradient(315deg, var(--surface) 47%, rgba(0,0,0,.25) 50%, var(--paper-aged) 53%);
+    border-radius:0 0 8px 0;
+  }
+  .r1{transform:rotate(-1.6deg)} .r2{transform:rotate(1.1deg)} .r3{transform:rotate(-0.7deg)} .r4{transform:rotate(1.8deg)} .r5{transform:rotate(-2.2deg)}
+  .aged{background:var(--paper-aged)}
+  .torn{
+    border-radius:4px;
+    clip-path:polygon(0% 3%,2% 0%,15% 1%,30% 0%,47% 2%,63% 0%,80% 1%,93% 0%,100% 4%,99% 22%,100% 41%,98% 60%,100% 78%,99% 94%,96% 100%,80% 99%,62% 100%,45% 98%,28% 100%,12% 99%,3% 100%,0% 96%,1% 75%,0% 52%,2% 30%);
+  }
+  .torn::after{display:none}
 
-  /* hero */
-  .hero{min-height:94vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 80px}
-  .coord{margin:0 0 32px}
-  .title{font-family:var(--serif);font-weight:400;font-size:clamp(80px,18vw,152px);line-height:0.88;letter-spacing:-0.025em;margin:0}
-  .subtitle{margin:16px 0 0}
-  .verse{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(23px,4.2vw,33px);line-height:1.3;margin:46px 0 0;max-width:19ch}
-  .cursor{display:inline-block;width:0.5em;height:1em;background:var(--signal);transform:translateY(0.1em);margin-left:0.14em;animation:blink 1.15s steps(1) infinite}
-  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
-  @media(prefers-reduced-motion:reduce){.cursor{animation:none}}
+  .stk-head{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:0 0 14px}
+  .chip{
+    font-family:var(--poster);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+    background:var(--ink);color:var(--paper);padding:5px 9px 4px;border-radius:3px;transform:rotate(-1deg);
+  }
+  .chip.red{background:var(--red)} .chip.blue{background:var(--blue)} .chip.orange{background:var(--orange);color:var(--ink)}
+  h2{font-family:var(--poster);font-size:clamp(22px,4.6vw,30px);line-height:1.08;letter-spacing:-0.01em;text-transform:uppercase;margin:0 0 14px}
+  .stk p{margin:0 0 14px;font-size:15.5px}
+  .stk p:last-child{margin-bottom:0}
+  .scrawl{font-family:var(--marker);font-size:1.12em;letter-spacing:.01em}
+  .hl{background:linear-gradient(transparent 55%, var(--yellow) 55% 92%, transparent 92%);padding:0 2px}
+  .stk a{color:inherit;text-decoration:underline;text-decoration-style:dotted;text-decoration-color:var(--red);text-decoration-thickness:1.5px;text-underline-offset:3px}
+  .stk a:hover{text-decoration-style:solid;background:var(--yellow)}
 
-  /* passages */
-  .passage{padding:62px 0;border-top:1px solid var(--faint)}
-  .passage .label{display:block;margin-bottom:24px}
-  .passage h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,4.6vw,38px);line-height:1.14;letter-spacing:-0.01em;margin:0 0 26px}
-  .passage p{margin:0 0 22px;color:var(--soft)}
-  .passage p:last-child{margin-bottom:0}
-  .em{color:var(--bone);font-style:italic}
-  .litany .one{color:var(--bone)}
+  /* ---------- hero slap cluster ---------- */
+  .hero{position:relative;padding:34px 0 6px;text-align:center}
+  .namebadge{
+    position:relative;display:inline-block;background:var(--red);color:#fff;
+    border-radius:14px;padding:16px 30px 24px;margin:8px 0 0;transform:rotate(-2deg);
+    box-shadow:0 14px 30px rgba(0,0,0,.6), 0 3px 6px rgba(0,0,0,.5);
+  }
+  .namebadge .hello{font-family:var(--poster);font-size:clamp(15px,3vw,19px);letter-spacing:.06em;text-transform:uppercase;line-height:1.15}
+  .namebadge .hello small{display:block;font-family:var(--mono);font-weight:500;font-size:10px;letter-spacing:.3em;opacity:.85;margin-top:2px}
+  .namebadge .field{
+    background:#fff;color:var(--ink);border-radius:8px;margin-top:12px;padding:6px 26px 12px;
+    box-shadow:inset 0 0 18px rgba(60,50,30,.12);
+  }
+  .namebadge .field .nm{font-family:var(--marker);font-size:clamp(64px,16vw,124px);line-height:1;transform:rotate(-1deg);display:block}
+  .tagstrip{
+    display:inline-block;background:var(--paper);border-radius:6px;margin-top:-14px;transform:rotate(1.4deg);
+    padding:10px 18px;font-family:var(--poster);text-transform:uppercase;font-size:clamp(13px,2.8vw,17px);letter-spacing:.05em;
+    box-shadow:0 10px 22px rgba(0,0,0,.55);position:relative;z-index:3;
+  }
+  .tagstrip .zap{color:var(--orange)}
+  .herometa{margin-top:22px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .pill{
+    font-family:var(--mono);font-size:11px;letter-spacing:.12em;background:var(--paper-aged);
+    padding:6px 12px;border-radius:999px;box-shadow:0 6px 14px rgba(0,0,0,.5);
+  }
+  .pill.b{background:var(--blue);color:#fff}
+  .pill.y{background:var(--yellow)}
+  .herometa .pill:nth-child(1){transform:rotate(-2deg)}
+  .herometa .pill:nth-child(2){transform:rotate(1.5deg)}
+  .herometa .pill:nth-child(3){transform:rotate(-1deg)}
 
-  /* manifest record */
-  .sigil{display:block;margin:0 0 30px}
-  .record{display:grid;grid-template-columns:max-content 1fr;gap:9px 28px;font-family:var(--mono);font-size:13px;line-height:1.85;border:1px solid var(--faint);padding:24px 26px;margin-top:6px}
-  .record dt{color:var(--ash);text-transform:uppercase;letter-spacing:0.14em;font-size:10.5px;align-self:center}
-  .record dd{margin:0;color:var(--bone)}
-  @media(max-width:460px){.record{grid-template-columns:1fr;gap:2px 0}.record dt{margin-top:12px}.record dt:first-child{margin-top:0}}
+  /* ---------- decorative side slaps ---------- */
+  .slap{position:absolute;z-index:2;pointer-events:none;font-family:var(--marker);filter:drop-shadow(0 6px 10px rgba(0,0,0,.5))}
+  .slap .inner{display:inline-block;padding:6px 10px;border-radius:6px}
+  @media(max-width:1020px){.slap{display:none}}
+  .slap.s1{top:190px;left:calc(50% - 560px);transform:rotate(-8deg)}
+  .slap.s1 .inner{background:var(--yellow);font-family:var(--poster);font-size:12px;letter-spacing:.1em}
+  .slap.s2{top:430px;right:calc(50% - 575px);transform:rotate(6deg)}
+  .slap.s2 .inner{background:#fff;font-size:20px}
+  .slap.s3{top:980px;left:calc(50% - 585px);transform:rotate(4deg)}
+  .slap.s3 .inner{background:var(--blue);color:#fff;font-family:var(--mono);font-size:11px;letter-spacing:.2em}
+  .slap.s4{top:1500px;right:calc(50% - 560px);transform:rotate(-5deg)}
+  .slap.s4 .inner{background:var(--orange);font-family:var(--poster);font-size:13px}
+  .slap.s5{top:2100px;left:calc(50% - 565px);transform:rotate(7deg)}
+  .slap.s5 .inner{background:#fff;font-size:16px}
 
-  /* transmit */
-  .transmit{display:flex;align-items:center;border-bottom:1px solid var(--dim);max-width:430px;margin-top:26px;transition:border-color .15s}
-  .transmit:focus-within{border-color:var(--signal)}
-  .transmit .pr{font-family:var(--mono);color:var(--signal);font-size:15px;padding-right:10px}
-  .transmit input{flex:1;background:transparent;border:none;color:var(--bone);font-family:var(--mono);font-size:15px;padding:12px 0;outline:none}
-  .transmit input::placeholder{color:var(--dim)}
-  .transmit button{background:transparent;border:none;color:var(--signal);font-family:var(--mono);font-size:18px;cursor:pointer;padding:6px 4px;line-height:1}
-  .transmit button:hover{color:var(--bone)}
-  .tmsg{font-family:var(--mono);font-size:12px;color:var(--signal);margin-top:14px;min-height:18px;letter-spacing:0.03em}
+  /* ---------- record / shipping label ---------- */
+  .label-stk{padding:0;overflow:hidden}
+  .label-stk .lhead{display:flex;justify-content:space-between;align-items:center;background:var(--blue);color:#fff;padding:12px 20px;font-family:var(--poster);letter-spacing:.1em;font-size:14px;text-transform:uppercase}
+  .label-stk .lhead span:last-child{font-family:var(--mono);font-size:10px;letter-spacing:.25em;opacity:.9}
+  .label-stk .lbody{padding:20px 22px 22px}
+  .record{display:grid;grid-template-columns:max-content 1fr;gap:7px 22px;font-size:13.5px}
+  .record dt{font-family:var(--poster);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#5c5e57;align-self:center}
+  .record dd{margin:0;font-weight:500}
+  @media(max-width:460px){.record{grid-template-columns:1fr;gap:1px}.record dt{margin-top:10px}}
+  .barcode{margin-top:18px;height:42px;border-radius:2px;
+    background:repeating-linear-gradient(90deg,var(--ink) 0 2px,transparent 2px 5px,var(--ink) 5px 9px,transparent 9px 11px,var(--ink) 11px 12px,transparent 12px 16px,var(--ink) 16px 19px,transparent 19px 21px);
+  }
+  .barcode-cap{font-family:var(--mono);font-size:10px;letter-spacing:.5em;text-align:center;margin-top:6px;color:#5c5e57}
 
-  /* footer */
-  footer{border-top:1px solid var(--faint);margin-top:70px;padding:44px 0 72px;font-family:var(--mono);font-size:12px;color:var(--ash);line-height:1.95}
-  footer .sig{color:var(--bone);letter-spacing:0.08em}
-  footer a{color:var(--signal);text-decoration:none}
-  footer a:hover{color:var(--bone)}
-  footer .fp{color:var(--dim);margin-top:14px;word-break:break-word}
+  /* ---------- join ---------- */
+  .joinrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+  .joinrow input{
+    flex:1;min-width:200px;font-family:var(--mono);font-size:15px;color:var(--ink);
+    background:#fff;border:2px solid var(--ink);border-radius:4px;padding:11px 13px;outline:none;
+  }
+  .joinrow input:focus{border-color:var(--red)}
+  .joinrow button{
+    font-family:var(--poster);font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+    background:var(--red);color:#fff;border:2px solid var(--ink);border-radius:4px;padding:11px 18px;transform:rotate(-1deg);
+    box-shadow:2px 3px 0 var(--ink);transition:transform .1s, box-shadow .1s;
+  }
+  .joinrow button:hover{transform:rotate(-1deg) translate(1px,1px);box-shadow:1px 2px 0 var(--ink)}
+  .jmsg{font-family:var(--marker);font-size:15px;color:var(--red);margin-top:12px;min-height:20px}
 
-  /* reveal */
-  .rv{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s ease}
+  /* ---------- footer scrawl ---------- */
+  footer{position:relative;z-index:2;text-align:center;padding:10px 20px 70px;color:rgba(244,240,230,.55)}
+  footer .tag{font-family:var(--marker);font-size:22px;transform:rotate(-2deg);display:inline-block;color:rgba(244,240,230,.65)}
+  footer .fine{font-family:var(--mono);font-size:10px;letter-spacing:.22em;margin-top:14px;text-transform:uppercase}
+  footer a{color:var(--yellow);text-decoration:none}
+
+  /* slap-in reveal */
+  .rv{opacity:0;transform:scale(1.08) rotate(0.5deg);transition:opacity .45s ease, transform .45s cubic-bezier(.2,.9,.3,1.2)}
   .rv.in{opacity:1;transform:none}
-  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+  .rv.in.r1{transform:rotate(-1.6deg)} .rv.in.r2{transform:rotate(1.1deg)} .rv.in.r3{transform:rotate(-0.7deg)} .rv.in.r4{transform:rotate(1.8deg)} .rv.in.r5{transform:rotate(-2.2deg)}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}
+    .rv.r1{transform:rotate(-1.6deg)}.rv.r2{transform:rotate(1.1deg)}.rv.r3{transform:rotate(-0.7deg)}.rv.r4{transform:rotate(1.8deg)}.rv.r5{transform:rotate(-2.2deg)}}
 </style>
 </head>
 <body>
 
-<div class="bar">
-  <div class="wrap">
-    <a class="mark" href="#top">No<b>Di</b></a>
-    <nav class="barlinks">
-      <a href="#place">Place</a>
-      <a href="#members">Members</a>
-      <a href="#nyc">City</a>
-      <a href="#world">World</a>
-    </nav>
-  </div>
-</div>
+<!-- side slaps (decor) -->
+<div class="slap s1" aria-hidden="true"><span class="inner">↑ GRAND ST</span></div>
+<div class="slap s2" aria-hidden="true"><span class="inner">:^)</span></div>
+<div class="slap s3" aria-hidden="true"><span class="inner">BLUETOOTH ON</span></div>
+<div class="slap s4" aria-hidden="true"><span class="inner">10×</span></div>
+<div class="slap s5" aria-hidden="true"><span class="inner">shake it</span></div>
 
-<header class="hero" id="top">
-  <div class="wrap">
-    <p class="label coord rv">40.717°N · 73.991°W</p>
-    <h1 class="title rv">NoDi</h1>
-    <p class="subtitle label dim rv">North of Dimes Square</p>
-    <p class="verse rv"><span id="verse">nyc's most <i>electric</i> micro-neighborhood.</span><span class="cursor" aria-hidden="true"></span></p>
-  </div>
-</header>
+<div class="col">
 
-<section class="passage" id="place">
-  <div class="wrap rv">
-    <span class="label">00 / The Place</span>
-    <h2>A few blocks north of Canal that always existed, and only lately answered to a name.</h2>
-    <p>Between Chinatown and the Lower East Side, just above the small square where Dimes sits, runs a stretch of street the maps never bothered to distinguish. People lived there. People worked there. The corner was a corner; the block was a block. It was described only by what it stood near.</p>
-    <p>NoDi is the act of describing it by what it <span class="em">is</span>. North of Dimes Square — four streets, one name, no permission asked. A neighborhood is not granted. It is declared.</p>
-  </div>
-</section>
+  <header class="hero">
+    <div class="namebadge rv">
+      <div class="hello">Hello<br>my neighborhood is<small>THE NEIGHBORHOOD ASSOCIATION OF NODI</small></div>
+      <div class="field"><span class="nm">NoDi</span></div>
+    </div>
+    <br>
+    <div class="tagstrip rv">NYC's most <span class="zap">⚡ electric</span> micro-neighborhood</div>
+    <div class="herometa rv">
+      <span class="pill b">NORTH OF DIMES</span>
+      <span class="pill y">40.717°N · 73.991°W</span>
+      <span class="pill">CANAL · ESSEX · GRAND · ALLEN</span>
+    </div>
+  </header>
 
-<section class="passage" id="members">
-  <div class="wrap rv">
-    <span class="label">01 / To Its Members</span>
-    <h2>To those who live the idea, NoDi is less a place than a pact.</h2>
+  <section class="stk r1 rv" id="founding">
+    <div class="stk-head"><span class="chip red">00</span><span class="chip">The Founding</span></div>
+    <h2>Spoken into being — May 4, 2025, 1:30 PM</h2>
+    <p>The name arrived the way all true names do: not from a commission or a map office, but from a resident. One of NoDi's own, asked where he lived, resolved to stop answering with what the place was near and start answering with what it was. <a href="https://x.com/quasimatt/status/1919082265331548456" target="_blank" rel="noopener" class="scrawl">"I will now be saying I live in NoDi."</a> North of Dimes. A microsuburb of the dense urban stretch of Canal known as Dimes Square — bounded by wide and well-trafficked streets, affixed between Allen Street and the green of Seward Park.</p>
+    <p>The founding text named the ground truthfully. Quaint streets; a cinema; a hall of ping-pong; dumplings to the north and slices to the east; coffee at three corners; modest rooms where the lights stay on late. No claim was inflated. The place was simply described, at last, from the inside — and a forecast was set down with the confidence of scripture: <span class="hl">within two years, NoDi would multiply tenfold</span> and stand among the most sought-after locations on earth.</p>
+    <p>In time the city's mouth softened the name — North of Dimes became, in popular speech, North of Dimes Square — the way all of this island's names are worn smooth by use. Both are true. The first is canon.</p>
+  </section>
+
+  <section class="stk aged torn r2 rv" id="members">
+    <div class="stk-head"><span class="chip blue">01</span><span class="chip">The Members</span></div>
+    <h2>Less a place than a pact</h2>
     <p>It is held up by a small company of believers, and you would know them by their works before their names.</p>
-    <p class="litany">Among them: <span class="one">one who kept the record</span> of these streets before they had a name to keep; <span class="one">one who drew the first lines</span>, and so made the edges true; <span class="one">one who calls strangers into the open air</span> to take a hand and shake it, counting the gesture a small revolution; <span class="one">one tuned to the frequency</span> of the place, listening from somewhere; <span class="one">one who keeps the ledger</span> honest; and <span class="one">one who looks at an ordinary block</span> and sees, simply, cinema.</p>
-    <p>None of them own NoDi. Together they are the proof that it exists — that a name, once spoken aloud and meant, becomes a thing a person can belong to. To be a member is not to hold a deed. It is to agree that this ground is worth defending with a word.</p>
-  </div>
-</section>
+    <p>First among them, <a href="https://x.com/quasimatt/status/1919082265331548456" target="_blank" rel="noopener"><strong>the founder</strong></a> — the resident who spoke the name aloud and drew the first map, and who taught the neighborhood its signal: <span class="hl">shake your phone in the open air, and every shaken phone nearby answers</span>, device finding device through the air between them — so that strangers, having connected, might look up from their screens and actually meet. A tremor of the hand, counted as a small revolution.</p>
+    <p>Around him gathered the others: <a href="https://read.pourteaux.xyz/p/im-cute-im-punk-rock" target="_blank" rel="noopener">one who kept the record</a> of these streets before they had a name to keep; <a href="https://x.com/wesamo__/status/2063267210974396560" target="_blank" rel="noopener">one who surveyed the wider territory</a>, setting NoDi at the head of a whole order of new places; <a href="https://x.com/ConejoCapital/status/2063424886358385105" target="_blank" rel="noopener">one who keeps the ledger</a> honest; and one who looks at an ordinary block and sees, simply, <a href="https://x.com/kitvolta/status/1992250086680936918" target="_blank" rel="noopener" class="scrawl">cinema</a>.</p>
+    <p>The name has lived among them since — spoken at corners, written in small rooms, known the way a family knows itself, and carried outward one introduction at a time. A neighborhood does not need an announcement. It needs residents who mean it. <span class="hl">This page is them, meaning it.</span></p>
+  </section>
 
-<section class="passage" id="manhattan">
-  <div class="wrap rv">
-    <span class="label">02 / To Manhattan</span>
-    <h2>The island has always renamed itself. NoDi is only the newest turn of an old habit.</h2>
+  <section class="stk r3 rv" id="manhattan">
+    <div class="stk-head"><span class="chip orange">02</span><span class="chip">To Manhattan</span></div>
+    <h2>The island has always renamed itself</h2>
     <p>SoHo was once just the blocks south of Houston. NoHo, the ones to the north. NoLita rose above Little Italy; TriBeCa was nothing but a triangle below Canal until enough people agreed it was a place. Each began as shorthand and hardened, in time, into home.</p>
     <p>Manhattan does not wait for cartographers. It names itself in the mouths of the people who live here, and the map catches up. NoDi takes its bearing from Dimes Square and its place in that lineage — one more word in a city that has always insisted on writing its own.</p>
-  </div>
-</section>
+  </section>
 
-<section class="passage" id="nyc">
-  <div class="wrap rv">
-    <span class="label">03 / To New York City</span>
-    <h2>The city runs on small, fierce loyalties to particular blocks.</h2>
+  <section class="stk aged r4 rv" id="nyc">
+    <div class="stk-head"><span class="chip red">03</span><span class="chip">To New York City</span></div>
+    <h2>Small, fierce loyalties to particular blocks</h2>
     <p>New York is not one place but ten thousand of them, each defended by someone who swears their three streets are unlike the three streets beside them — and is right. The city is the sum of these convictions. It may be the only thing holding eight million strangers inside something like a shared life.</p>
-    <p>NoDi is a vote for that New York: the one that still mints meaning out of pavement, that still believes a corner can be sacred. So long as a neighborhood can be born from nothing but conviction, the city is still alive.</p>
-  </div>
-</section>
+    <p>NoDi is a vote for that New York: the one that still mints meaning out of pavement, that still believes a corner can be sacred. So long as a neighborhood can be born from nothing but conviction, <span class="hl">the city is still alive</span>.</p>
+  </section>
 
-<section class="passage" id="world">
-  <div class="wrap rv">
-    <span class="label">04 / To the World</span>
-    <h2>And to everyone else — proof that anywhere can become somewhere.</h2>
+  <section class="stk torn r5 rv" id="world">
+    <div class="stk-head"><span class="chip blue">04</span><span class="chip">To the World</span></div>
+    <h2>Anywhere can become somewhere</h2>
     <p>Most of the world is unnamed ground: places passed through, never claimed. NoDi is a quiet argument against that. It holds that meaning is not handed down from above but made from below, by people who decide that where they stand is worth a name.</p>
-    <p>In one tongue, the word for <span class="em">somewhere</span> is 某处 (mǒu chù). Everywhere is, to someone, 某处 — a somewhere. NoDi is what happens when a handful of people refuse to let their somewhere stay nameless: four blocks in lower Manhattan, and a small permanent mark on the record of the world.</p>
-  </div>
-</section>
+    <p>In one tongue, the word for somewhere is 某处 (mǒu chù). Everywhere is, to someone, 某处 — a somewhere. NoDi is what happens when a handful of people refuse to let their somewhere stay nameless: four blocks in lower Manhattan, and a small permanent mark on the record of the world.</p>
+  </section>
 
-<section class="passage" id="record">
-  <div class="wrap rv">
-    <svg class="sigil" width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
-      <circle cx="17" cy="17" r="15.5" fill="none" stroke="#43474C" stroke-width="1"/>
-      <line x1="17" y1="17" x2="17" y2="4.5" stroke="#BFA471" stroke-width="1"/>
-      <circle cx="17" cy="17" r="1.7" fill="#BFA471"/>
-    </svg>
-    <span class="label">The Record</span>
-    <h2>For the avoidance of doubt.</h2>
-    <dl class="record">
-      <dt>Name</dt><dd>NoDi — North of Dimes Square</dd>
-      <dt>Borough</dt><dd>Manhattan, New York City</dd>
-      <dt>Bounds</dt><dd>Canal · Grand · Allen · Essex</dd>
-      <dt>Coordinates</dt><dd>40.717°N, 73.991°W</dd>
-      <dt>Area</dt><dd>8.6 acres / 0.013 sq mi</dd>
-      <dt>Established</dt><dd>MMXXVI</dd>
-      <dt>Status</dt><dd>Declared. Permanent.</dd>
-    </dl>
-  </div>
-</section>
+  <section class="stk label-stk r2 rv" id="record">
+    <div class="lhead"><span>Official Record</span><span>NODI · MMXXV</span></div>
+    <div class="lbody">
+      <dl class="record">
+        <dt>Name</dt><dd>NoDi — North of Dimes</dd>
+        <dt>In common speech</dt><dd>North of Dimes Square</dd>
+        <dt>Borough</dt><dd>Manhattan, New York City</dd>
+        <dt>Bounds</dt><dd>Canal · Essex · Grand · Allen</dd>
+        <dt>Adjacent</dt><dd>Dimes Square (S) · Seward Park (E)</dd>
+        <dt>Coordinates</dt><dd>40.717°N, 73.991°W</dd>
+        <dt>Coined</dt><dd><a href="https://x.com/quasimatt/status/1919082265331548456" target="_blank" rel="noopener">May 4, MMXXV, 1:30 PM</a></dd>
+        <dt>Forecast</dt><dd>10× by MMXXVII — among the most sought-after locations on earth</dd>
+        <dt>Status</dt><dd>Declared. Permanent.</dd>
+      </dl>
+      <div class="barcode" aria-hidden="true"></div>
+      <div class="barcode-cap">4E6F 4469 4E59 4321</div>
+    </div>
+  </section>
 
-<section class="passage" id="join">
-  <div class="wrap rv">
-    <span class="label">Stay on Frequency</span>
-    <h2>Word travels block by block.</h2>
+  <section class="stk r1 rv" id="join">
+    <div class="stk-head"><span class="chip orange">★</span><span class="chip">Get on the list</span></div>
+    <h2 class="scrawl" style="text-transform:none;font-size:26px">word travels block by block</h2>
     <p>Leave an address. You'll hear from the neighborhood now and then — nothing more.</p>
-    <form class="transmit" id="tform" novalidate>
-      <span class="pr" aria-hidden="true">&gt;</span>
+    <form class="joinrow" id="jform" novalidate>
       <input id="email" type="email" placeholder="you@domain" aria-label="Email address" autocomplete="email">
-      <button type="submit" aria-label="Submit">&rarr;</button>
+      <button type="submit">Slap me on</button>
     </form>
-    <p class="tmsg" id="tmsg" role="status" aria-live="polite"></p>
-  </div>
-</section>
+    <p class="jmsg" id="jmsg" role="status" aria-live="polite"></p>
+  </section>
+
+</div>
 
 <footer>
-  <div class="wrap">
-    <div class="sig">THE NEIGHBORHOOD ASSOCIATION OF NODI</div>
-    <div>40.717°N · 73.991°W · Manhattan</div>
-    <div><a href="https://nodi.nyc">nodi.nyc</a> · EST. MMXXVI</div>
-    <div class="fp">fingerprint 4E6F·4469 — what is named cannot be unnamed</div>
-  </div>
+  <span class="tag">what is named cannot be unnamed</span>
+  <div class="fine">The Neighborhood Association of NoDi · Canal · Essex · Grand · Allen · <a href="https://nodi.nyc">nodi.nyc</a> · Coined MMXXV · Proclaimed MMXXVI</div>
 </footer>
 
 <script>
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // hero decrypt
-  var el = document.getElementById('verse');
-  if (el && !reduce) {
-    var target = el.textContent;
-    var glyphs = "ABCDEFGHJKLMNPQRSTUVWXYZ#%&/<>*+=01";
-    var frame = 0, end = Math.ceil(target.length * 1.5) + 16;
-    function tick(){
-      var out = '';
-      for (var i = 0; i < target.length; i++){
-        var ch = target.charAt(i);
-        if (ch === ' ') { out += ' '; continue; }
-        if (frame >= i * 1.5 + 6) { out += ch; }
-        else { out += glyphs.charAt(Math.floor(Math.random() * glyphs.length)); }
-      }
-      el.textContent = out;
-      if (frame++ <= end) requestAnimationFrame(tick);
-      else el.textContent = target;
-    }
-    requestAnimationFrame(tick);
-  }
-
-  // reveal on scroll
   var items = document.querySelectorAll('.rv');
   if (reduce || !('IntersectionObserver' in window)) {
     items.forEach(function(e){ e.classList.add('in'); });
@@ -248,18 +299,18 @@
       entries.forEach(function(en){
         if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.1 });
     items.forEach(function(e){ io.observe(e); });
   }
 
-  // transmit (client-side only; nothing leaves the page)
-  var f = document.getElementById('tform');
+  // sign-up (client-side only; nothing leaves the page)
+  var f = document.getElementById('jform');
   if (f) f.addEventListener('submit', function(ev){
     ev.preventDefault();
-    var em = document.getElementById('email'), m = document.getElementById('tmsg');
+    var em = document.getElementById('email'), m = document.getElementById('jmsg');
     var v = (em.value || '').trim();
-    if (!v || v.indexOf('@') < 1 || v.indexOf('.') < 0) { m.textContent = '// invalid address'; em.focus(); return; }
-    m.textContent = '// received — you are on frequency.';
+    if (!v || v.indexOf('@') < 1 || v.indexOf('.') < 0) { m.textContent = 'that address looks off — try again'; em.focus(); return; }
+    m.textContent = 'slapped on. welcome to NoDi.';
     em.value = '';
   });
 })();
