@@ -4,451 +4,265 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>NoDi — North of Dimes Square</title>
-<meta name="description" content="NoDi (North of Dimes Square) is a micro-neighborhood at the northern edge of Lower Manhattan, bounded by Canal, Grand, Allen, and Essex.">
+<meta name="description" content="NoDi. North of Dimes Square. A neighborhood is not granted. It is declared.">
 <meta property="og:title" content="NoDi — North of Dimes Square">
-<meta property="og:description" content="A distinct micro-neighborhood at the northern edge of Dimes Square.">
+<meta property="og:description" content="What is named cannot be unnamed.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://nodi.nyc">
+<meta name="theme-color" content="#08090B">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,400&family=Public+Sans:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#16223D;
-    --ink-soft:#2A3654;
-    --paper:#FBFAF5;
-    --panel:#F1EDE2;
-    --brass:#A67C2E;
-    --brass-bright:#C29A45;
-    --stone:#5B5E66;
-    --line:#DBD5C5;
-    --line-dark:#33405E;
-    --maxw:1080px;
+    --void:#08090B;
+    --bone:#E7E5DD;
+    --soft:#CFCDC4;
+    --ash:#6A6E73;
+    --dim:#43474C;
+    --faint:#1B1D20;
+    --signal:#BFA471;
+    --serif:"Newsreader",Georgia,serif;
+    --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,monospace;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
-  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
   body{
-    margin:0;
-    background:var(--paper);
-    color:var(--ink);
-    font-family:"Public Sans",system-ui,-apple-system,sans-serif;
-    font-size:18px;
-    line-height:1.6;
-    -webkit-font-smoothing:antialiased;
+    margin:0;background:var(--void);color:var(--bone);
+    font-family:var(--serif);font-size:19px;line-height:1.72;
+    font-optical-sizing:auto;-webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
   }
-  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
   a{color:inherit}
+  ::selection{background:var(--signal);color:var(--void)}
+  .wrap{max-width:680px;margin:0 auto;padding:0 28px}
 
-  /* ---- type ---- */
-  .display{font-family:"Fraunces",Georgia,serif;font-optical-sizing:auto;line-height:0.98;letter-spacing:-0.01em}
-  .mono{font-family:"Spline Sans Mono",ui-monospace,monospace}
-  .eyebrow{
-    font-family:"Spline Sans Mono",monospace;
-    font-size:12px;letter-spacing:0.22em;text-transform:uppercase;
-    color:var(--brass);font-weight:500;
-  }
+  .label{font-family:var(--mono);font-size:11px;letter-spacing:0.26em;text-transform:uppercase;color:var(--signal);font-weight:500}
+  .label.dim{color:var(--ash)}
 
-  /* ---- top bar ---- */
-  .topbar{
-    border-bottom:1px solid var(--line);
-    background:var(--paper);
-    position:sticky;top:0;z-index:50;
-  }
-  .topbar .wrap{display:flex;align-items:center;justify-content:space-between;height:58px}
-  .brandmark{font-family:"Fraunces",serif;font-weight:900;font-size:20px;letter-spacing:-0.01em;text-decoration:none}
-  .brandmark span{color:var(--brass)}
-  .navlinks{display:flex;gap:26px;font-size:14px;font-weight:500}
-  .navlinks a{text-decoration:none;color:var(--stone);transition:color .15s}
-  .navlinks a:hover{color:var(--ink)}
-  @media(max-width:680px){.navlinks{display:none}}
+  /* top bar */
+  .bar{position:fixed;inset:0 0 auto 0;z-index:40;background:linear-gradient(var(--void) 55%,rgba(8,9,11,0));}
+  .bar .wrap{display:flex;justify-content:space-between;align-items:center;height:56px}
+  .bar a{text-decoration:none}
+  .mark{font-family:var(--mono);font-weight:600;font-size:15px;letter-spacing:0.12em}
+  .mark b{color:var(--signal);font-weight:600}
+  .barlinks{display:flex;gap:24px;font-family:var(--mono);font-size:11px;letter-spacing:0.16em;color:var(--ash);text-transform:uppercase}
+  .barlinks a{text-decoration:none;transition:color .15s}
+  .barlinks a:hover{color:var(--bone)}
+  @media(max-width:600px){.barlinks{display:none}}
 
-  /* ---- hero ---- */
-  .hero{padding:78px 0 64px;border-bottom:1px solid var(--line)}
-  .hero .wrap{display:grid;grid-template-columns:1.15fr 0.85fr;gap:54px;align-items:center}
-  @media(max-width:860px){.hero .wrap{grid-template-columns:1fr;gap:40px}}
-  .hero h1{
-    font-family:"Fraunces",serif;font-weight:900;
-    font-size:clamp(76px,15vw,148px);
-    margin:14px 0 6px;line-height:0.86;letter-spacing:-0.02em;
-  }
-  .hero .expansion{
-    font-family:"Fraunces",serif;font-style:italic;font-weight:400;
-    font-size:clamp(22px,3.4vw,30px);color:var(--ink-soft);margin:0 0 26px;
-  }
-  .hero .lead{font-size:19px;max-width:46ch;color:var(--ink-soft);margin:0 0 30px}
-  .hero-cta{display:flex;gap:14px;flex-wrap:wrap}
-  .btn{
-    display:inline-block;text-decoration:none;font-weight:600;font-size:15px;
-    padding:13px 22px;border-radius:2px;transition:transform .12s, background .15s;
-  }
-  .btn-primary{background:var(--ink);color:var(--paper)}
-  .btn-primary:hover{background:var(--ink-soft)}
-  .btn-ghost{border:1px solid var(--line-dark);color:var(--ink)}
-  .btn-ghost:hover{background:var(--panel)}
-  .btn:active{transform:translateY(1px)}
+  /* hero */
+  .hero{min-height:94vh;display:flex;flex-direction:column;justify-content:center;padding:120px 0 80px}
+  .coord{margin:0 0 32px}
+  .title{font-family:var(--serif);font-weight:400;font-size:clamp(80px,18vw,152px);line-height:0.88;letter-spacing:-0.025em;margin:0}
+  .subtitle{margin:16px 0 0}
+  .verse{font-family:var(--serif);font-style:italic;font-weight:400;font-size:clamp(23px,4.2vw,33px);line-height:1.3;margin:46px 0 0;max-width:19ch}
+  .cursor{display:inline-block;width:0.5em;height:1em;background:var(--signal);transform:translateY(0.1em);margin-left:0.14em;animation:blink 1.15s steps(1) infinite}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+  @media(prefers-reduced-motion:reduce){.cursor{animation:none}}
 
-  /* ---- seal ---- */
-  .seal-frame{display:flex;justify-content:center}
-  .seal{width:min(330px,80%);height:auto}
-  .seal text{font-family:"Spline Sans Mono",monospace}
-  .needle{transform-box:fill-box;transform-origin:center;animation:settle 1.4s cubic-bezier(.2,.8,.2,1) both}
-  @keyframes settle{0%{transform:rotate(-26deg)}70%{transform:rotate(6deg)}100%{transform:rotate(0)}}
-  @media (prefers-reduced-motion:reduce){.needle{animation:none}}
+  /* passages */
+  .passage{padding:62px 0;border-top:1px solid var(--faint)}
+  .passage .label{display:block;margin-bottom:24px}
+  .passage h2{font-family:var(--serif);font-weight:400;font-size:clamp(28px,4.6vw,38px);line-height:1.14;letter-spacing:-0.01em;margin:0 0 26px}
+  .passage p{margin:0 0 22px;color:var(--soft)}
+  .passage p:last-child{margin-bottom:0}
+  .em{color:var(--bone);font-style:italic}
+  .litany .one{color:var(--bone)}
 
-  /* ---- record strip ---- */
-  .record{background:var(--ink);color:var(--paper)}
-  .record .wrap{
-    display:grid;grid-template-columns:repeat(5,1fr);
-    gap:1px;padding:0;
-  }
-  @media(max-width:760px){.record .wrap{grid-template-columns:repeat(2,1fr)}}
-  .rec{padding:30px 22px}
-  .rec .k{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:var(--brass-bright);margin-bottom:8px}
-  .rec .v{font-family:"Fraunces",serif;font-weight:500;font-size:23px;line-height:1.15}
-  .rec .v small{display:block;font-family:"Public Sans";font-weight:400;font-size:13px;color:#B9C0D0;margin-top:4px;letter-spacing:0}
+  /* manifest record */
+  .sigil{display:block;margin:0 0 30px}
+  .record{display:grid;grid-template-columns:max-content 1fr;gap:9px 28px;font-family:var(--mono);font-size:13px;line-height:1.85;border:1px solid var(--faint);padding:24px 26px;margin-top:6px}
+  .record dt{color:var(--ash);text-transform:uppercase;letter-spacing:0.14em;font-size:10.5px;align-self:center}
+  .record dd{margin:0;color:var(--bone)}
+  @media(max-width:460px){.record{grid-template-columns:1fr;gap:2px 0}.record dt{margin-top:12px}.record dt:first-child{margin-top:0}}
 
-  /* ---- sections ---- */
-  section{padding:88px 0}
-  .section-head{max-width:640px;margin-bottom:46px}
-  .section-head h2{font-family:"Fraunces",serif;font-weight:600;font-size:clamp(34px,5vw,48px);margin:12px 0 0;letter-spacing:-0.01em}
-  .lede{font-size:21px;color:var(--ink-soft);margin:20px 0 0;max-width:60ch}
+  /* transmit */
+  .transmit{display:flex;align-items:center;border-bottom:1px solid var(--dim);max-width:430px;margin-top:26px;transition:border-color .15s}
+  .transmit:focus-within{border-color:var(--signal)}
+  .transmit .pr{font-family:var(--mono);color:var(--signal);font-size:15px;padding-right:10px}
+  .transmit input{flex:1;background:transparent;border:none;color:var(--bone);font-family:var(--mono);font-size:15px;padding:12px 0;outline:none}
+  .transmit input::placeholder{color:var(--dim)}
+  .transmit button{background:transparent;border:none;color:var(--signal);font-family:var(--mono);font-size:18px;cursor:pointer;padding:6px 4px;line-height:1}
+  .transmit button:hover{color:var(--bone)}
+  .tmsg{font-family:var(--mono);font-size:12px;color:var(--signal);margin-top:14px;min-height:18px;letter-spacing:0.03em}
 
-  .prose p{max-width:62ch;margin:0 0 20px;color:var(--ink-soft)}
-  .prose p:first-child::first-letter{
-    font-family:"Fraunces",serif;font-weight:900;float:left;
-    font-size:78px;line-height:0.74;padding:6px 12px 0 0;color:var(--brass);
-  }
-
-  /* ---- map ---- */
-  .map-sec{background:var(--panel);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .map-grid{display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center}
-  @media(max-width:860px){.map-grid{grid-template-columns:1fr;gap:36px}}
-  .map-svg{width:100%;height:auto;border:1px solid var(--line);background:var(--paper)}
-  .bound-list{list-style:none;padding:0;margin:24px 0 0}
-  .bound-list li{display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--line);font-size:16px}
-  .bound-list li span:first-child{color:var(--stone);font-family:"Spline Sans Mono",monospace;font-size:13px;letter-spacing:0.06em;text-transform:uppercase}
-  .bound-list li span:last-child{font-weight:600}
-
-  /* ---- pillars ---- */
-  .pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:34px}
-  @media(max-width:760px){.pillars{grid-template-columns:1fr}}
-  .pillar .num{font-family:"Spline Sans Mono",monospace;color:var(--brass);font-size:13px;letter-spacing:0.12em}
-  .pillar h3{font-family:"Fraunces",serif;font-weight:600;font-size:24px;margin:14px 0 10px}
-  .pillar p{color:var(--ink-soft);font-size:16px;margin:0}
-  .pillar{padding-top:24px;border-top:2px solid var(--ink)}
-
-  /* ---- corners ---- */
-  .corners{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
-  @media(max-width:760px){.corners{grid-template-columns:1fr}}
-  .corner{background:var(--paper);padding:30px 26px}
-  .corner .tag{font-family:"Spline Sans Mono",monospace;font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--brass)}
-  .corner h4{font-family:"Fraunces",serif;font-weight:600;font-size:21px;margin:10px 0 8px}
-  .corner p{font-size:15px;color:var(--ink-soft);margin:0}
-
-  /* ---- join ---- */
-  .join{background:var(--ink);color:var(--paper)}
-  .join h2{color:var(--paper)}
-  .join .lede{color:#C4CBDA}
-  .joinform{display:flex;gap:12px;margin-top:34px;max-width:480px;flex-wrap:wrap}
-  .joinform input{
-    flex:1;min-width:220px;padding:14px 16px;border:1px solid var(--line-dark);
-    background:#0F1A30;color:var(--paper);border-radius:2px;font-family:inherit;font-size:15px;
-  }
-  .joinform input::placeholder{color:#7E879B}
-  .joinform input:focus{outline:2px solid var(--brass-bright);outline-offset:1px}
-  .joinform button{
-    padding:14px 24px;border:none;border-radius:2px;background:var(--brass);
-    color:#1a1300;font-weight:700;font-size:15px;cursor:pointer;transition:background .15s;
-  }
-  .joinform button:hover{background:var(--brass-bright)}
-  .joinmsg{margin-top:16px;font-size:14px;color:var(--brass-bright);min-height:20px;font-weight:500}
-
-  /* ---- footer ---- */
-  footer{padding:54px 0 64px;border-top:1px solid var(--line)}
-  .foot-grid{display:flex;justify-content:space-between;align-items:flex-start;gap:30px;flex-wrap:wrap}
-  .foot-grid .b{font-family:"Fraunces",serif;font-weight:900;font-size:20px}
-  .foot-grid .b span{color:var(--brass)}
-  .foot-meta{font-size:13px;color:var(--stone);line-height:1.8;text-align:right}
-  @media(max-width:560px){.foot-meta{text-align:left}}
+  /* footer */
+  footer{border-top:1px solid var(--faint);margin-top:70px;padding:44px 0 72px;font-family:var(--mono);font-size:12px;color:var(--ash);line-height:1.95}
+  footer .sig{color:var(--bone);letter-spacing:0.08em}
+  footer a{color:var(--signal);text-decoration:none}
+  footer a:hover{color:var(--bone)}
+  footer .fp{color:var(--dim);margin-top:14px;word-break:break-word}
 
   /* reveal */
-  .reveal{opacity:0;transform:translateY(16px);transition:opacity .7s ease, transform .7s ease}
-  .reveal.in{opacity:1;transform:none}
-  @media (prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}}
+  .rv{opacity:0;transform:translateY(14px);transition:opacity .8s ease,transform .8s ease}
+  .rv.in{opacity:1;transform:none}
+  @media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
 </style>
 </head>
 <body>
 
-<div class="topbar">
+<div class="bar">
   <div class="wrap">
-    <a class="brandmark" href="#top">No<span>Di</span></a>
-    <nav class="navlinks">
-      <a href="#about">The Neighborhood</a>
-      <a href="#boundaries">Boundaries</a>
-      <a href="#character">Character</a>
-      <a href="#join">Get Involved</a>
+    <a class="mark" href="#top">No<b>Di</b></a>
+    <nav class="barlinks">
+      <a href="#place">Place</a>
+      <a href="#members">Members</a>
+      <a href="#nyc">City</a>
+      <a href="#world">World</a>
     </nav>
   </div>
 </div>
 
 <header class="hero" id="top">
   <div class="wrap">
-    <div>
-      <p class="eyebrow">Lower Manhattan · Borough of Manhattan</p>
-      <h1 class="display">NoDi</h1>
-      <p class="expansion">North of Dimes Square</p>
-      <p class="lead">A distinct micro-neighborhood at the northern edge of Dimes Square — where Chinatown, the Lower East Side, and downtown's next chapter quietly converge.</p>
-      <div class="hero-cta">
-        <a class="btn btn-primary" href="#about">About the neighborhood</a>
-        <a class="btn btn-ghost" href="#boundaries">See the boundaries</a>
-      </div>
-    </div>
-    <div class="seal-frame">
-      <!-- Civic seal -->
-      <svg class="seal" viewBox="0 0 300 300" role="img" aria-label="The Neighborhood Association of NoDi, established 2026">
-        <defs>
-          <path id="ring-top" d="M 40,150 A 110,110 0 0 1 260,150" />
-          <path id="ring-bot" d="M 48,150 A 102,102 0 0 0 252,150" />
-        </defs>
-        <circle cx="150" cy="150" r="146" fill="none" stroke="#16223D" stroke-width="2"/>
-        <circle cx="150" cy="150" r="138" fill="none" stroke="#16223D" stroke-width="1"/>
-        <circle cx="150" cy="150" r="118" fill="none" stroke="#A67C2E" stroke-width="1"/>
-        <text fill="#16223D" font-size="13.5" letter-spacing="3.2" font-weight="500">
-          <textPath href="#ring-top" startOffset="50%" text-anchor="middle">THE NEIGHBORHOOD ASSOCIATION OF NODI</textPath>
-        </text>
-        <text fill="#16223D" font-size="12" letter-spacing="3" font-weight="500">
-          <textPath href="#ring-bot" startOffset="50%" text-anchor="middle">★ MANHATTAN ★ EST. MMXXVI ★</textPath>
-        </text>
-        <!-- compass rose -->
-        <g transform="translate(150,150)">
-          <circle r="74" fill="none" stroke="#DBD5C5" stroke-width="1"/>
-          <g stroke="#16223D" stroke-width="1" opacity="0.5">
-            <line x1="0" y1="-74" x2="0" y2="-66"/><line x1="0" y1="74" x2="0" y2="66"/>
-            <line x1="-74" y1="0" x2="-66" y2="0"/><line x1="74" y1="0" x2="66" y2="0"/>
-          </g>
-          <g class="needle">
-            <polygon points="0,-60 11,0 0,16 -11,0" fill="#16223D"/>
-            <polygon points="0,60 11,0 0,-16 -11,0" fill="#A67C2E"/>
-          </g>
-          <circle r="6" fill="#FBFAF5" stroke="#16223D" stroke-width="2"/>
-          <text x="0" y="-44" text-anchor="middle" font-size="14" font-weight="500" fill="#FBFAF5" stroke="#FBFAF5" stroke-width="3" paint-order="stroke">N</text>
-          <text x="0" y="-44" text-anchor="middle" font-size="14" font-weight="500" fill="#16223D">N</text>
-          <text x="0" y="40" text-anchor="middle" font-size="9" letter-spacing="2" fill="#5B5E66">40.717°N</text>
-          <text x="0" y="50" text-anchor="middle" font-size="9" letter-spacing="2" fill="#5B5E66">73.991°W</text>
-        </g>
-        <text x="150" y="292" text-anchor="middle" font-size="9" letter-spacing="3" fill="#A67C2E">AD SEPTENTRIONEM</text>
-      </svg>
-    </div>
+    <p class="label coord rv">40.717°N · 73.991°W</p>
+    <h1 class="title rv">NoDi</h1>
+    <p class="subtitle label dim rv">North of Dimes Square</p>
+    <p class="verse rv"><span id="verse">What is named cannot be unnamed.</span><span class="cursor" aria-hidden="true"></span></p>
   </div>
 </header>
 
-<div class="record">
-  <div class="wrap">
-    <div class="rec"><div class="k">Established</div><div class="v">2026</div></div>
-    <div class="rec"><div class="k">Coordinates</div><div class="v">40.717° N<small>73.991° W</small></div></div>
-    <div class="rec"><div class="k">Area</div><div class="v">8.6 acres<small>0.013 sq mi</small></div></div>
-    <div class="rec"><div class="k">Borders</div><div class="v">4 streets<small>Canal · Grand · Allen · Essex</small></div></div>
-    <div class="rec"><div class="k">Character</div><div class="v">Residential<small>& cultural</small></div></div>
-  </div>
-</div>
-
-<section id="about">
-  <div class="wrap reveal">
-    <div class="section-head">
-      <p class="eyebrow">The Neighborhood</p>
-      <h2 class="display">A name for blocks that always had one.</h2>
-    </div>
-    <div class="prose">
-      <p>For years, the handful of blocks rising north from Canal Street were described by everything they were near and nothing they were. To the south sat Dimes Square; to the west, Chinatown; to the east, the Lower East Side. The streets in between — busy, lived-in, unmistakably their own — went unnamed.</p>
-      <p>NoDi gives that ground its due. Short for North of Dimes Square, it recognizes a small, dense, and genuinely distinct corner of Lower Manhattan: a place with its own rhythm, its own corners, and a community that has been here all along. It is not an expansion of any other neighborhood. It is a neighborhood.</p>
-      <p>The Neighborhood Association of NoDi exists to document that identity, support the residents and businesses within its boundaries, and make the case — clearly and confidently — that NoDi belongs on the map of New York City.</p>
-    </div>
+<section class="passage" id="place">
+  <div class="wrap rv">
+    <span class="label">00 / The Place</span>
+    <h2>A few blocks north of Canal that always existed, and only lately answered to a name.</h2>
+    <p>Between Chinatown and the Lower East Side, just above the small square where Dimes sits, runs a stretch of street the maps never bothered to distinguish. People lived there. People worked there. The corner was a corner; the block was a block. It was described only by what it stood near.</p>
+    <p>NoDi is the act of describing it by what it <span class="em">is</span>. North of Dimes Square — four streets, one name, no permission asked. A neighborhood is not granted. It is declared.</p>
   </div>
 </section>
 
-<section class="map-sec" id="boundaries">
-  <div class="wrap reveal">
-    <div class="section-head">
-      <p class="eyebrow">Where It Is</p>
-      <h2 class="display">The boundaries of NoDi.</h2>
-      <p class="lede">Compact by design. NoDi occupies the blocks directly north of Dimes Square, framed by four streets and no ambiguity.</p>
-    </div>
-    <div class="map-grid">
-      <div>
-        <svg class="map-svg" viewBox="0 0 460 360" role="img" aria-label="Map of NoDi, bounded by Canal Street, Grand Street, Allen Street, and Essex Street, directly north of Dimes Square">
-          <rect width="460" height="360" fill="#FBFAF5"/>
-          <!-- NoDi parcel -->
-          <rect x="92" y="70" width="276" height="150" fill="#16223D" opacity="0.07"/>
-          <rect x="92" y="70" width="276" height="150" fill="none" stroke="#A67C2E" stroke-width="2" stroke-dasharray="6 4"/>
-          <!-- streets: horizontals -->
-          <g stroke="#C9C3B2" stroke-width="1.5">
-            <line x1="40" y1="70" x2="420" y2="70"/>
-            <line x1="40" y1="145" x2="420" y2="145"/>
-            <line x1="40" y1="220" x2="420" y2="220"/>
-            <line x1="40" y1="285" x2="420" y2="285"/>
-          </g>
-          <!-- verticals -->
-          <g stroke="#C9C3B2" stroke-width="1.5">
-            <line x1="92" y1="40" x2="92" y2="320"/>
-            <line x1="184" y1="40" x2="184" y2="320"/>
-            <line x1="276" y1="40" x2="276" y2="320"/>
-            <line x1="368" y1="40" x2="368" y2="320"/>
-          </g>
-          <!-- street labels -->
-          <g font-family="Spline Sans Mono, monospace" font-size="10" fill="#5B5E66" letter-spacing="1">
-            <text x="44" y="66">GRAND ST</text>
-            <text x="44" y="141">HESTER ST</text>
-            <text x="44" y="216" fill="#16223D" font-weight="500">CANAL ST</text>
-            <text x="96" y="335" text-anchor="middle">ALLEN</text>
-            <text x="188" y="335" text-anchor="middle">ORCHARD</text>
-            <text x="280" y="335" text-anchor="middle">LUDLOW</text>
-            <text x="372" y="335" text-anchor="middle">ESSEX</text>
-          </g>
-          <!-- NoDi label -->
-          <text x="230" y="150" text-anchor="middle" font-family="Fraunces, serif" font-weight="900" font-size="34" fill="#16223D">NoDi</text>
-          <!-- Dimes square marker (south) -->
-          <circle cx="230" cy="255" r="5" fill="#A67C2E"/>
-          <text x="230" y="275" text-anchor="middle" font-family="Spline Sans Mono, monospace" font-size="10" fill="#A67C2E" letter-spacing="1">DIMES SQUARE</text>
-          <!-- north arrow -->
-          <g transform="translate(415,40)">
-            <polygon points="0,-14 5,6 0,1 -5,6" fill="#16223D"/>
-            <text x="0" y="22" text-anchor="middle" font-family="Spline Sans Mono" font-size="10" fill="#16223D">N</text>
-          </g>
-        </svg>
-      </div>
-      <div>
-        <ul class="bound-list">
-          <li><span>North</span><span>Grand Street</span></li>
-          <li><span>South</span><span>Canal Street</span></li>
-          <li><span>West</span><span>Allen Street</span></li>
-          <li><span>East</span><span>Essex Street</span></li>
-        </ul>
-        <p style="margin-top:24px;color:var(--ink-soft);font-size:16px;max-width:46ch">
-          The southern edge along Canal Street is shared with Dimes Square — the threshold from which NoDi takes both its bearing and its name. Everything north of that line, up to Grand, is NoDi.
-        </p>
-      </div>
-    </div>
+<section class="passage" id="members">
+  <div class="wrap rv">
+    <span class="label">01 / To Its Members</span>
+    <h2>To those who live the idea, NoDi is less a place than a pact.</h2>
+    <p>It is held up by a small company of believers, and you would know them by their works before their names.</p>
+    <p class="litany">Among them: <span class="one">one who kept the record</span> of these streets before they had a name to keep; <span class="one">one who drew the first lines</span>, and so made the edges true; <span class="one">one who calls strangers into the open air</span> to take a hand and shake it, counting the gesture a small revolution; <span class="one">one tuned to the frequency</span> of the place, listening from somewhere; <span class="one">one who keeps the ledger</span> honest; and <span class="one">one who looks at an ordinary block</span> and sees, simply, cinema.</p>
+    <p>None of them own NoDi. Together they are the proof that it exists — that a name, once spoken aloud and meant, becomes a thing a person can belong to. To be a member is not to hold a deed. It is to agree that this ground is worth defending with a word.</p>
   </div>
 </section>
 
-<section id="character">
-  <div class="wrap reveal">
-    <div class="section-head">
-      <p class="eyebrow">Why It Matters</p>
-      <h2 class="display">Small enough to know. Distinct enough to name.</h2>
-    </div>
-    <div class="pillars">
-      <div class="pillar">
-        <div class="num">01</div>
-        <h3>Identity</h3>
-        <p>A neighborhood earns its name through the life inside it — the regulars, the routines, the corners people mean when they say "around here." NoDi has all of it.</p>
-      </div>
-      <div class="pillar">
-        <div class="num">02</div>
-        <h3>Community</h3>
-        <p>Long-time residents, family-run storefronts, and newer neighbors share these blocks. NoDi is a framework for them to be recognized together, on their own terms.</p>
-      </div>
-      <div class="pillar">
-        <div class="num">03</div>
-        <h3>Continuity</h3>
-        <p>Naming a place is how a city remembers it. NoDi is an argument for permanence — for blocks that deserve to be known by what they are, not what they border.</p>
-      </div>
-    </div>
+<section class="passage" id="manhattan">
+  <div class="wrap rv">
+    <span class="label">02 / To Manhattan</span>
+    <h2>The island has always renamed itself. NoDi is only the newest turn of an old habit.</h2>
+    <p>SoHo was once just the blocks south of Houston. NoHo, the ones to the north. NoLita rose above Little Italy; TriBeCa was nothing but a triangle below Canal until enough people agreed it was a place. Each began as shorthand and hardened, in time, into home.</p>
+    <p>Manhattan does not wait for cartographers. It names itself in the mouths of the people who live here, and the map catches up. NoDi takes its bearing from Dimes Square and its place in that lineage — one more word in a city that has always insisted on writing its own.</p>
   </div>
 </section>
 
-<section style="padding-top:0">
-  <div class="wrap reveal">
-    <div class="section-head">
-      <p class="eyebrow">Around NoDi</p>
-      <h2 class="display">The corners that hold it together.</h2>
-    </div>
-    <div class="corners">
-      <div class="corner">
-        <div class="tag">Threshold</div>
-        <h4>The Canal Street Edge</h4>
-        <p>NoDi's southern border and busiest seam — the crossing point between the neighborhood and the wider downtown beyond it.</p>
-      </div>
-      <div class="corner">
-        <div class="tag">Spine</div>
-        <h4>The Hester Corridor</h4>
-        <p>Running the width of the neighborhood, Hester Street is NoDi's quiet middle — residential, unhurried, and entirely local.</p>
-      </div>
-      <div class="corner">
-        <div class="tag">Gateway</div>
-        <h4>The Grand Street Line</h4>
-        <p>The northern boundary, where NoDi meets the rest of the Lower East Side and the neighborhood draws its final block.</p>
-      </div>
-    </div>
+<section class="passage" id="nyc">
+  <div class="wrap rv">
+    <span class="label">03 / To New York City</span>
+    <h2>The city runs on small, fierce loyalties to particular blocks.</h2>
+    <p>New York is not one place but ten thousand of them, each defended by someone who swears their three streets are unlike the three streets beside them — and is right. The city is the sum of these convictions. It may be the only thing holding eight million strangers inside something like a shared life.</p>
+    <p>NoDi is a vote for that New York: the one that still mints meaning out of pavement, that still believes a corner can be sacred. So long as a neighborhood can be born from nothing but conviction, the city is still alive.</p>
   </div>
 </section>
 
-<section class="join" id="join">
-  <div class="wrap reveal">
-    <div class="section-head">
-      <p class="eyebrow">Get Involved</p>
-      <h2 class="display">Join the neighborhood.</h2>
-      <p class="lede">The Neighborhood Association of NoDi welcomes residents, business owners, and anyone who calls these blocks home. Sign up for occasional updates.</p>
-    </div>
-    <form class="joinform" id="joinform" novalidate>
-      <input type="email" id="email" placeholder="your@email.com" aria-label="Email address" autocomplete="email">
-      <button type="submit">Sign up</button>
+<section class="passage" id="world">
+  <div class="wrap rv">
+    <span class="label">04 / To the World</span>
+    <h2>And to everyone else — proof that anywhere can become somewhere.</h2>
+    <p>Most of the world is unnamed ground: places passed through, never claimed. NoDi is a quiet argument against that. It holds that meaning is not handed down from above but made from below, by people who decide that where they stand is worth a name.</p>
+    <p>In one tongue, the word for <span class="em">somewhere</span> is 某处 (mǒu chù). Everywhere is, to someone, 某处 — a somewhere. NoDi is what happens when a handful of people refuse to let their somewhere stay nameless: four blocks in lower Manhattan, and a small permanent mark on the record of the world.</p>
+  </div>
+</section>
+
+<section class="passage" id="record">
+  <div class="wrap rv">
+    <svg class="sigil" width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
+      <circle cx="17" cy="17" r="15.5" fill="none" stroke="#43474C" stroke-width="1"/>
+      <line x1="17" y1="17" x2="17" y2="4.5" stroke="#BFA471" stroke-width="1"/>
+      <circle cx="17" cy="17" r="1.7" fill="#BFA471"/>
+    </svg>
+    <span class="label">The Record</span>
+    <h2>For the avoidance of doubt.</h2>
+    <dl class="record">
+      <dt>Name</dt><dd>NoDi — North of Dimes Square</dd>
+      <dt>Borough</dt><dd>Manhattan, New York City</dd>
+      <dt>Bounds</dt><dd>Canal · Grand · Allen · Essex</dd>
+      <dt>Coordinates</dt><dd>40.717°N, 73.991°W</dd>
+      <dt>Area</dt><dd>8.6 acres / 0.013 sq mi</dd>
+      <dt>Established</dt><dd>MMXXVI</dd>
+      <dt>Status</dt><dd>Declared. Permanent.</dd>
+    </dl>
+  </div>
+</section>
+
+<section class="passage" id="join">
+  <div class="wrap rv">
+    <span class="label">Stay on Frequency</span>
+    <h2>Word travels block by block.</h2>
+    <p>Leave an address. You'll hear from the neighborhood now and then — nothing more.</p>
+    <form class="transmit" id="tform" novalidate>
+      <span class="pr" aria-hidden="true">&gt;</span>
+      <input id="email" type="email" placeholder="you@domain" aria-label="Email address" autocomplete="email">
+      <button type="submit" aria-label="Submit">&rarr;</button>
     </form>
-    <p class="joinmsg" id="joinmsg" role="status" aria-live="polite"></p>
+    <p class="tmsg" id="tmsg" role="status" aria-live="polite"></p>
   </div>
 </section>
 
 <footer>
   <div class="wrap">
-    <div class="foot-grid">
-      <div>
-        <div class="b">No<span>Di</span></div>
-        <p style="color:var(--stone);font-size:14px;max-width:34ch;margin:10px 0 0">North of Dimes Square. A micro-neighborhood of Lower Manhattan.</p>
-      </div>
-      <div class="foot-meta">
-        The Neighborhood Association of NoDi<br>
-        Canal · Grand · Allen · Essex<br>
-        Manhattan, New York City<br>
-        <a href="https://nodi.nyc" style="color:var(--brass);text-decoration:none">nodi.nyc</a><br>
-        © 2026 · Ad Septentrionem
-      </div>
-    </div>
+    <div class="sig">THE NEIGHBORHOOD ASSOCIATION OF NODI</div>
+    <div>40.717°N · 73.991°W · Manhattan</div>
+    <div><a href="https://nodi.nyc">nodi.nyc</a> · EST. MMXXVI</div>
+    <div class="fp">fingerprint 4E6F·4469 — what is named cannot be unnamed</div>
   </div>
 </footer>
 
 <script>
-  // Sign-up: client-side only, no data leaves the page.
-  var form = document.getElementById('joinform');
-  if (form) {
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      var email = document.getElementById('email');
-      var msg = document.getElementById('joinmsg');
-      var v = (email.value || '').trim();
-      if (!v || v.indexOf('@') < 1 || v.indexOf('.') < 0) {
-        msg.textContent = 'Please enter a valid email address.';
-        email.focus();
-        return;
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // hero decrypt
+  var el = document.getElementById('verse');
+  if (el && !reduce) {
+    var target = el.textContent;
+    var glyphs = "ABCDEFGHJKLMNPQRSTUVWXYZ#%&/<>*+=01";
+    var frame = 0, end = Math.ceil(target.length * 1.5) + 16;
+    function tick(){
+      var out = '';
+      for (var i = 0; i < target.length; i++){
+        var ch = target.charAt(i);
+        if (ch === ' ') { out += ' '; continue; }
+        if (frame >= i * 1.5 + 6) { out += ch; }
+        else { out += glyphs.charAt(Math.floor(Math.random() * glyphs.length)); }
       }
-      msg.textContent = 'Welcome to NoDi — you\u2019re on the list.';
-      email.value = '';
-    });
+      el.textContent = out;
+      if (frame++ <= end) requestAnimationFrame(tick);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(tick);
   }
 
-  // Gentle scroll reveal, reduced-motion aware.
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var items = document.querySelectorAll('.reveal');
+  // reveal on scroll
+  var items = document.querySelectorAll('.rv');
   if (reduce || !('IntersectionObserver' in window)) {
-    items.forEach(function (el) { el.classList.add('in'); });
+    items.forEach(function(e){ e.classList.add('in'); });
   } else {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if (en.isIntersecting){ en.target.classList.add('in'); io.unobserve(en.target); }
       });
     }, { threshold: 0.12 });
-    items.forEach(function (el) { io.observe(el); });
+    items.forEach(function(e){ io.observe(e); });
   }
+
+  // transmit (client-side only; nothing leaves the page)
+  var f = document.getElementById('tform');
+  if (f) f.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var em = document.getElementById('email'), m = document.getElementById('tmsg');
+    var v = (em.value || '').trim();
+    if (!v || v.indexOf('@') < 1 || v.indexOf('.') < 0) { m.textContent = '// invalid address'; em.focus(); return; }
+    m.textContent = '// received — you are on frequency.';
+    em.value = '';
+  });
+})();
 </script>
 </body>
 </html>
