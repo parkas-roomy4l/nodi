@@ -294,13 +294,13 @@
     <div class="stk-head"><span class="chip orange">★</span><span class="chip">Get on the list</span></div>
     <h2 class="scrawl" style="text-transform:none;font-size:26px">word travels block by block</h2>
     <p>Leave an address. You'll hear from the neighborhood now and then — nothing more.</p>
-    <form class="joinrow" id="jform" novalidate>
-      <input id="email" type="email" placeholder="you@domain" aria-label="Email address" autocomplete="email">
+    <form class="joinrow" id="jform" action="https://read.pourteaux.xyz/subscribe" method="post" target="_blank">
+      <input id="email" name="email" type="email" placeholder="you@domain" aria-label="Email address" autocomplete="email" required>
+      <input type="hidden" name="source" value="nodi.nyc">
       <button type="submit">Slap me on</button>
     </form>
     <p class="jmsg" id="jmsg" role="status" aria-live="polite"></p>
   </section>
-
 </div>
 
 <footer>
@@ -324,16 +324,7 @@
     items.forEach(function(e){ io.observe(e); });
   }
 
-  // sign-up (client-side only; nothing leaves the page)
-  var f = document.getElementById('jform');
-  if (f) f.addEventListener('submit', function(ev){
-    ev.preventDefault();
-    var em = document.getElementById('email'), m = document.getElementById('jmsg');
-    var v = (em.value || '').trim();
-    if (!v || v.indexOf('@') < 1 || v.indexOf('.') < 0) { m.textContent = 'that address looks off — try again'; em.focus(); return; }
-    m.textContent = 'slapped on. welcome to NoDi.';
-    em.value = '';
-  });
+  // sign-up: posts to Substack, opens confirmation in new tab
 })();
 </script>
 </body>
