@@ -172,19 +172,6 @@
   .barcode-cap{font-family:var(--mono);font-size:10px;letter-spacing:.5em;text-align:center;margin-top:6px;color:#5c5e57}
 
   /* ---------- join ---------- */
-  .joinrow{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-  .joinrow input{
-    flex:1;min-width:200px;font-family:var(--mono);font-size:15px;color:var(--ink);
-    background:#fff;border:2px solid var(--ink);border-radius:4px;padding:11px 13px;outline:none;
-  }
-  .joinrow input:focus{border-color:var(--red)}
-  .joinrow button{
-    font-family:var(--poster);font-size:13px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
-    background:var(--red);color:#fff;border:2px solid var(--ink);border-radius:4px;padding:11px 18px;transform:rotate(-1deg);
-    box-shadow:2px 3px 0 var(--ink);transition:transform .1s, box-shadow .1s;
-  }
-  .joinrow button:hover{transform:rotate(-1deg) translate(1px,1px);box-shadow:1px 2px 0 var(--ink)}
-  .jmsg{font-family:var(--marker);font-size:15px;color:var(--red);margin-top:12px;min-height:20px}
 
   /* ---------- footer scrawl ---------- */
   footer{position:relative;z-index:2;text-align:center;padding:10px 20px 70px;color:rgba(244,240,230,.55)}
@@ -204,7 +191,7 @@
 
 <!-- side slaps (decor) -->
 <div class="slap s1" aria-hidden="true"><span class="inner">⚡ electric</span></div>
-<div class="slap s2" aria-hidden="true"><span class="inner">shake it</span></div>
+<div class="slap s2" aria-hidden="true"><span class="inner">#ShakeApp</span></div>
 <div class="slap s3" aria-hidden="true"><span class="inner">CANAL ST</span></div>
 <div class="slap s4" aria-hidden="true"><span class="inner">ESSEX ST</span></div>
 <div class="slap s5" aria-hidden="true"><span class="inner">GRAND ST</span></div>
@@ -308,19 +295,6 @@
     </div>
   </section>
 
-  <!-- mailing list section — commented out for now
-  <section class="stk r1 rv" id="join">
-    <div class="stk-head"><span class="chip orange">★</span><span class="chip">Get on the list</span></div>
-    <h2 class="scrawl" style="text-transform:none;font-size:26px">word travels block by block</h2>
-    <p>Leave an address. You'll hear from the neighborhood now and then — nothing more.</p>
-    <form class="joinrow" id="jform" action="https://read.pourteaux.xyz/subscribe" method="post" target="_blank">
-      <input id="email" name="email" type="email" placeholder="you@domain" aria-label="Email address" autocomplete="email" required>
-      <input type="hidden" name="source" value="nodi.nyc">
-      <button type="submit">Slap me on</button>
-    </form>
-    <p class="jmsg" id="jmsg" role="status" aria-live="polite"></p>
-  </section>
-  -->
 </div>
 
 <footer>
@@ -345,7 +319,7 @@
     items.forEach(function(e){ io.observe(e); });
   }
 
-  // sign-up: posts to Substack, opens confirmation in new tab
+ 
 })();
 </script>
 </body>
