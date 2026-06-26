@@ -156,6 +156,15 @@
   .map-stk .map-wrap a{display:block;line-height:0}
   .map-stk .map-wrap img{display:block;width:100%;height:auto;aspect-ratio:1982/1484;transition:opacity .2s}
   .map-stk .map-wrap a:hover img{opacity:.92}
+  .map-wm{
+    position:absolute;bottom:14px;right:14px;z-index:3;pointer-events:none;
+    background:var(--red);color:#fff;
+    font-family:var(--poster);font-size:clamp(13px,2.4vw,17px);letter-spacing:.06em;
+    padding:8px 14px 7px;border-radius:6px;transform:rotate(-3deg);
+    box-shadow:0 6px 14px rgba(0,0,0,.45), 0 1px 0 rgba(255,255,255,.18) inset;
+    text-transform:lowercase;
+  }
+  .map-wm .zap{color:var(--yellow)}
   .label-stk{padding:0;overflow:hidden}
   .label-stk .lhead{display:flex;justify-content:space-between;align-items:center;background:var(--blue);color:#fff;padding:12px 20px;font-family:var(--poster);letter-spacing:.1em;font-size:14px;text-transform:uppercase}
   .label-stk .lhead span:last-child{font-family:var(--mono);font-size:10px;letter-spacing:.25em;opacity:.9}
@@ -213,7 +222,7 @@
   <section class="stk map-stk r2 rv" id="map">
     <div class="stk-head" style="padding:20px 22px 0"><span class="chip blue">The Territory</span><span class="chip">LES Micro-neighborhoods</span></div>
     <div style="padding:14px 22px 0;font-size:14px;color:#5c5e57">NoDi and its neighbors — the emerging micro-geography of the Lower East Side. <a href="https://www.google.com/maps/d/viewer?mid=1zTP-fQb5v-aaspDdec1fTre7M6BmYrg" target="_blank" rel="noopener" style="color:var(--red);text-decoration:none;font-family:var(--poster);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-left:8px">Open full map ↗</a></div>
-    <div class="map-wrap"><a href="https://www.google.com/maps/d/viewer?mid=1zTP-fQb5v-aaspDdec1fTre7M6BmYrg" target="_blank" rel="noopener"><img src="microneigbhorhood-pourteaux.jpg" alt="Map of NoDi and LES micro-neighborhoods" width="1982" height="1484" loading="lazy"></a></div>
+    <div class="map-wrap"><a href="https://www.google.com/maps/d/viewer?mid=1zTP-fQb5v-aaspDdec1fTre7M6BmYrg" target="_blank" rel="noopener"><img src="microneigbhorhood-pourteaux.jpg" alt="Map of NoDi and LES micro-neighborhoods" width="1982" height="1484" loading="lazy"></a><div class="map-wm" aria-hidden="true"><span class="zap">⚡</span> nodi.nyc</div></div>
   </section>
 
   <section class="stk r1 rv" id="founding">
