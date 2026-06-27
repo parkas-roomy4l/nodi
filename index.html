@@ -154,8 +154,7 @@
   .map-stk{padding:0;overflow:hidden}
   .map-stk .map-wrap{overflow:hidden;position:relative;background:var(--ink);aspect-ratio:1982/1484;touch-action:none;cursor:grab}
   .map-stk .map-wrap.grabbing{cursor:grabbing}
-  .map-stk .map-wrap .panzoom{display:block;width:100%;height:100%}
-  .map-stk .map-wrap img{display:block;width:100%;height:auto;aspect-ratio:1982/1484;user-select:none;-webkit-user-drag:none;pointer-events:none}
+  .map-stk .map-wrap img{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
   .map-wm{
     position:absolute;bottom:14px;right:14px;z-index:3;pointer-events:none;
     background:var(--red);color:#fff;
@@ -233,7 +232,7 @@
   <section class="stk map-stk r2 rv" id="map">
     <div class="stk-head" style="padding:20px 22px 0"><span class="chip blue">The Territory</span><span class="chip">LES Micro-neighborhoods</span></div>
     <div style="padding:14px 22px 0;font-size:14px;color:#5c5e57">NoDi and its neighbors — the emerging micro-geography of the Lower East Side.</div>
-    <div class="map-wrap" id="mapwrap"><div class="panzoom" id="panzoom"><img src="micro-labels-pourteaux.jpg" alt="Map of NoDi and LES micro-neighborhoods" width="1982" height="1484"></div><div class="zoom-ctrl"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">−</button><button type="button" id="zreset" aria-label="Reset zoom" style="font-size:14px">⤾</button></div><div class="map-links"><a class="zoom-open" href="micro-labels-pourteaux.jpg" target="_blank" rel="noopener">Open full res ↗</a><a class="zoom-open" href="https://www.google.com/maps/d/viewer?mid=1zTP-fQb5v-aaspDdec1fTre7M6BmYrg" target="_blank" rel="noopener">Open in Google Maps ↗</a></div><div class="map-wm" aria-hidden="true"><span class="zap">⚡</span> nodi.nyc</div></div>
+    <div class="map-wrap" id="mapwrap"><img id="panzoom" src="micro-labels-pourteaux.jpg" alt="Map of NoDi and LES micro-neighborhoods" width="1982" height="1484"><div class="zoom-ctrl"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">−</button><button type="button" id="zreset" aria-label="Reset zoom" style="font-size:14px">⤾</button></div><div class="map-links"><a class="zoom-open" href="micro-labels-pourteaux.jpg" target="_blank" rel="noopener">Open full res ↗</a><a class="zoom-open" href="https://www.google.com/maps/d/viewer?mid=1zTP-fQb5v-aaspDdec1fTre7M6BmYrg" target="_blank" rel="noopener">Open in Google Maps ↗</a></div><div class="map-wm" aria-hidden="true"><span class="zap">⚡</span> nodi.nyc</div></div>
   </section>
 
   <section class="stk r1 rv" id="founding">
@@ -339,29 +338,30 @@
   // map zoom
   var el = document.getElementById('panzoom');
   var wrap = document.getElementById('mapwrap');
-  if (el && wrap && window.Panzoom){
+  function initPanzoom(){
+    if (!el || !wrap || !window.Panzoom) return;
     var pz = Panzoom(el, {
       maxScale: 6,
       minScale: 1,
       contain: 'outside',
       step: 0.4,
-      animate: true
+      animate: true,
+      cursor: 'grab'
     });
     wrap.addEventListener('wheel', function(ev){
-      if (!ev.shiftKey && !ev.ctrlKey && !ev.metaKey){
-        // require modifier or pinch on desktop to avoid hijacking page scroll
-        return;
-      }
+      if (!ev.shiftKey && !ev.ctrlKey && !ev.metaKey) return;
+      ev.preventDefault();
       pz.zoomWithWheel(ev);
-    });
-    // pinch gestures + drag: panzoom handles automatically
-    wrap.addEventListener('panzoomstart', function(){ wrap.classList.add('grabbing'); });
-    wrap.addEventListener('panzoomend', function(){ wrap.classList.remove('grabbing'); });
+    }, { passive: false });
+    el.addEventListener('panzoomstart', function(){ wrap.classList.add('grabbing'); });
+    el.addEventListener('panzoomend', function(){ wrap.classList.remove('grabbing'); });
 
-    document.getElementById('zin').addEventListener('click', function(){ pz.zoomIn(); });
-    document.getElementById('zout').addEventListener('click', function(){ pz.zoomOut(); });
-    document.getElementById('zreset').addEventListener('click', function(){ pz.reset(); });
+    document.getElementById('zin').addEventListener('click', function(e){ e.stopPropagation(); pz.zoomIn(); });
+    document.getElementById('zout').addEventListener('click', function(e){ e.stopPropagation(); pz.zoomOut(); });
+    document.getElementById('zreset').addEventListener('click', function(e){ e.stopPropagation(); pz.reset(); });
   }
+  if (el && el.complete) initPanzoom();
+  else if (el) el.addEventListener('load', initPanzoom);
 })();
 </script>
 </body>
