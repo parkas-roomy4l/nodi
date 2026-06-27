@@ -225,7 +225,7 @@
     <div class="herometa rv">
       <a class="pill y" href="https://x.com/quasimatt/status/2064178894211514574" target="_blank" rel="noopener">NODI OR NOWHERE</a>
       <span class="pill b">NORTH OF DIMES</span>
-      <span class="pill">ORIGINAL BORDERS: CANAL · ESSEX · GRAND · ALLEN</span>
+      <span class="pill">BORDERS: CANAL · ESSEX · GRAND · ALLEN</span>
     </div>
   </header>
 
@@ -296,7 +296,7 @@
         <dt>Name</dt><dd>NoDi — North of Dimes</dd>
         <dt>In common speech</dt><dd>North of Dimes Square</dd>
         <dt>Borough</dt><dd>Manhattan, New York City</dd>
-        <dt>Original Borders</dt><dd>Canal · Essex · Grand · Allen</dd>
+        <dt>Borders</dt><dd>Canal · Essex · Grand · Allen</dd>
         <dt>Adjacent</dt><dd>Dimes Square (S) · Seward Park (E)</dd>
         <dt>Coordinates</dt><dd>40.717°N, 73.991°W</dd>
         <dt>Motto</dt><dd><a href="https://x.com/wesamo__/status/2064156993485471848" target="_blank" rel="noopener">NoDi or Nowhere</a></dd>
@@ -314,11 +314,10 @@
 
 <footer>
   <span class="tag">the energy is nothing short of electric</span>
-  <div class="fine">The Neighborhood Association of NoDi · Original borders: Canal · Essex · Grand · Allen · <a href="https://nodi.nyc">nodi.nyc</a> · Est. May 4, MMXXV</div>
+  <div class="fine">The Neighborhood Association of NoDi · Borders: Canal · Essex · Grand · Allen · <a href="https://nodi.nyc">nodi.nyc</a> · Est. May 4, MMXXV</div>
   <div class="fine" style="margin-top:8px"><a href="https://x.com/pourteaux" target="_blank" rel="noopener">contact</a></div>
 </footer>
 
-<script src="https://unpkg.com/@panzoom/[email protected]/dist/panzoom.min.js"></script>
 <script>
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -335,33 +334,117 @@
     items.forEach(function(e){ io.observe(e); });
   }
 
-  // map zoom
-  var el = document.getElementById('panzoom');
-  var wrap = document.getElementById('mapwrap');
-  function initPanzoom(){
-    if (!el || !wrap || !window.Panzoom) return;
-    var pz = Panzoom(el, {
-      maxScale: 6,
-      minScale: 1,
-      contain: 'outside',
-      step: 0.4,
-      animate: true,
-      cursor: 'grab'
-    });
+  // ---- custom map pan/zoom (no library) ----
+  (function(){
+    var img = document.getElementById('panzoom');
+    var wrap = document.getElementById('mapwrap');
+    if (!img || !wrap) return;
+
+    var scale = 1, tx = 0, ty = 0;
+    var minScale = 1, maxScale = 6;
+
+    img.style.transformOrigin = '0 0';
+    img.style.transform = 'translate(0px,0px) scale(1)';
+    img.style.willChange = 'transform';
+
+    function clamp(){
+      if (scale < minScale) scale = minScale;
+      if (scale > maxScale) scale = maxScale;
+      var w = wrap.clientWidth, h = wrap.clientHeight;
+      var iw = img.clientWidth * scale, ih = img.clientHeight * scale;
+      var minX = Math.min(0, w - iw);
+      var minY = Math.min(0, h - ih);
+      var maxX = 0, maxY = 0;
+      if (iw <= w) { tx = (w - iw) / 2; } else { tx = Math.max(minX, Math.min(maxX, tx)); }
+      if (ih <= h) { ty = (h - ih) / 2; } else { ty = Math.max(minY, Math.min(maxY, ty)); }
+    }
+    function apply(){
+      clamp();
+      img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
+    }
+    function zoomAt(cx, cy, factor){
+      var prev = scale;
+      scale *= factor;
+      if (scale < minScale) scale = minScale;
+      if (scale > maxScale) scale = maxScale;
+      var ratio = scale / prev;
+      tx = cx - (cx - tx) * ratio;
+      ty = cy - (cy - ty) * ratio;
+      apply();
+    }
+    function center(){ return { x: wrap.clientWidth/2, y: wrap.clientHeight/2 }; }
+
+    // buttons
+    var zi = document.getElementById('zin'), zo = document.getElementById('zout'), zr = document.getElementById('zreset');
+    if (zi) zi.addEventListener('click', function(e){ e.stopPropagation(); var c = center(); zoomAt(c.x, c.y, 1.5); });
+    if (zo) zo.addEventListener('click', function(e){ e.stopPropagation(); var c = center(); zoomAt(c.x, c.y, 1/1.5); });
+    if (zr) zr.addEventListener('click', function(e){ e.stopPropagation(); scale = 1; tx = 0; ty = 0; apply(); });
+
+    // wheel (with modifier)
     wrap.addEventListener('wheel', function(ev){
       if (!ev.shiftKey && !ev.ctrlKey && !ev.metaKey) return;
       ev.preventDefault();
-      pz.zoomWithWheel(ev);
+      var rect = wrap.getBoundingClientRect();
+      var cx = ev.clientX - rect.left, cy = ev.clientY - rect.top;
+      var factor = ev.deltaY < 0 ? 1.12 : 1/1.12;
+      zoomAt(cx, cy, factor);
     }, { passive: false });
-    el.addEventListener('panzoomstart', function(){ wrap.classList.add('grabbing'); });
-    el.addEventListener('panzoomend', function(){ wrap.classList.remove('grabbing'); });
 
-    document.getElementById('zin').addEventListener('click', function(e){ e.stopPropagation(); pz.zoomIn(); });
-    document.getElementById('zout').addEventListener('click', function(e){ e.stopPropagation(); pz.zoomOut(); });
-    document.getElementById('zreset').addEventListener('click', function(e){ e.stopPropagation(); pz.reset(); });
-  }
-  if (el && el.complete) initPanzoom();
-  else if (el) el.addEventListener('load', initPanzoom);
+    // pointer drag (mouse + touch)
+    var pointers = {}, lastPinchDist = 0, lastPinchCenter = null;
+    wrap.addEventListener('pointerdown', function(ev){
+      if (ev.target.closest('.zoom-ctrl, .map-links')) return;
+      pointers[ev.pointerId] = { x: ev.clientX, y: ev.clientY };
+      wrap.setPointerCapture(ev.pointerId);
+      wrap.classList.add('grabbing');
+    });
+    wrap.addEventListener('pointermove', function(ev){
+      if (!(ev.pointerId in pointers)) return;
+      var ids = Object.keys(pointers);
+      if (ids.length === 1){
+        var p = pointers[ev.pointerId];
+        tx += ev.clientX - p.x;
+        ty += ev.clientY - p.y;
+        p.x = ev.clientX; p.y = ev.clientY;
+        apply();
+      } else if (ids.length === 2){
+        pointers[ev.pointerId].x = ev.clientX;
+        pointers[ev.pointerId].y = ev.clientY;
+        var a = pointers[ids[0]], b = pointers[ids[1]];
+        var dx = b.x - a.x, dy = b.y - a.y;
+        var dist = Math.sqrt(dx*dx + dy*dy);
+        var rect = wrap.getBoundingClientRect();
+        var cx = (a.x + b.x)/2 - rect.left, cy = (a.y + b.y)/2 - rect.top;
+        if (lastPinchDist){
+          zoomAt(cx, cy, dist / lastPinchDist);
+        }
+        lastPinchDist = dist;
+        lastPinchCenter = { x: cx, y: cy };
+      }
+    });
+    function endPointer(ev){
+      delete pointers[ev.pointerId];
+      if (Object.keys(pointers).length < 2){ lastPinchDist = 0; lastPinchCenter = null; }
+      if (Object.keys(pointers).length === 0){ wrap.classList.remove('grabbing'); }
+    }
+    wrap.addEventListener('pointerup', endPointer);
+    wrap.addEventListener('pointercancel', endPointer);
+    wrap.addEventListener('pointerleave', endPointer);
+
+    // double-tap / double-click to zoom in
+    var lastTap = 0;
+    wrap.addEventListener('click', function(ev){
+      if (ev.target.closest('.zoom-ctrl, .map-links')) return;
+      var now = Date.now();
+      if (now - lastTap < 320){
+        var rect = wrap.getBoundingClientRect();
+        zoomAt(ev.clientX - rect.left, ev.clientY - rect.top, 1.7);
+        lastTap = 0;
+      } else {
+        lastTap = now;
+      }
+    });
+  })();
 })();
 </script>
 </body>
