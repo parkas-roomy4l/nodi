@@ -152,10 +152,10 @@
   .slap.s7 .inner{background:var(--paper-aged);font-family:var(--marker);font-size:16px;border:2px dashed var(--ink)}
 
   .map-stk{padding:0;overflow:hidden}
-  .map-stk .map-wrap{overflow:hidden;position:relative;background:var(--ink)}
-  .map-stk .map-wrap a{display:block;line-height:0}
-  .map-stk .map-wrap img{display:block;width:100%;height:auto;aspect-ratio:1982/1484;transition:opacity .2s}
-  .map-stk .map-wrap a:hover img{opacity:.92}
+  .map-stk .map-wrap{overflow:hidden;position:relative;background:var(--ink);aspect-ratio:1982/1484;touch-action:none;cursor:grab}
+  .map-stk .map-wrap.grabbing{cursor:grabbing}
+  .map-stk .map-wrap .panzoom{display:block;width:100%;height:100%}
+  .map-stk .map-wrap img{display:block;width:100%;height:auto;aspect-ratio:1982/1484;user-select:none;-webkit-user-drag:none;pointer-events:none}
   .map-wm{
     position:absolute;bottom:14px;right:14px;z-index:3;pointer-events:none;
     background:var(--red);color:#fff;
@@ -165,6 +165,17 @@
     text-transform:lowercase;
   }
   .map-wm .zap{color:var(--yellow)}
+  .zoom-ctrl{position:absolute;top:14px;right:14px;z-index:3;display:flex;flex-direction:column;gap:6px}
+  .zoom-ctrl button{
+    width:34px;height:34px;border:none;border-radius:5px;cursor:pointer;
+    background:rgba(23,24,26,.85);color:#fff;font-family:var(--poster);font-size:18px;line-height:1;
+    box-shadow:0 4px 10px rgba(0,0,0,.4);transition:background .15s;
+  }
+  .zoom-ctrl button:hover{background:var(--ink)}
+  .zoom-ctrl button:active{transform:translateY(1px)}
+  .map-links{position:absolute;bottom:14px;left:14px;z-index:3;display:flex;gap:6px;flex-wrap:wrap;max-width:calc(100% - 28px - 140px)}
+  .zoom-open{font-family:var(--poster);font-size:10px;letter-spacing:.1em;text-transform:uppercase;background:rgba(244,240,230,.92);color:var(--ink);padding:6px 10px;border-radius:4px;text-decoration:none;box-shadow:0 4px 10px rgba(0,0,0,.4)}
+  .zoom-open:hover{background:#fff}
   .label-stk{padding:0;overflow:hidden}
   .label-stk .lhead{display:flex;justify-content:space-between;align-items:center;background:var(--blue);color:#fff;padding:12px 20px;font-family:var(--poster);letter-spacing:.1em;font-size:14px;text-transform:uppercase}
   .label-stk .lhead span:last-child{font-family:var(--mono);font-size:10px;letter-spacing:.25em;opacity:.9}
@@ -221,8 +232,8 @@
 
   <section class="stk map-stk r2 rv" id="map">
     <div class="stk-head" style="padding:20px 22px 0"><span class="chip blue">The Territory</span><span class="chip">LES Micro-neighborhoods</span></div>
-    <div style="padding:14px 22px 0;font-size:14px;color:#5c5e57">NoDi and its neighbors — the emerging micro-geography of the Lower East Side. <a href="https://www.google.com/maps/d/viewer?mid=1zTP-fQb5v-aaspDdec1fTre7M6BmYrg" target="_blank" rel="noopener" style="color:var(--red);text-decoration:none;font-family:var(--poster);font-size:11px;letter-spacing:.1em;text-transform:uppercase;margin-left:8px">Open in Google Maps ↗</a></div>
-    <div class="map-wrap"><a href="micro-labels-pourteaux.jpg" target="_blank" rel="noopener"><img src="micro-labels-pourteaux.jpg" alt="Map of NoDi and LES micro-neighborhoods" width="1982" height="1484" loading="lazy"></a><div class="map-wm" aria-hidden="true"><span class="zap">⚡</span> nodi.nyc</div></div>
+    <div style="padding:14px 22px 0;font-size:14px;color:#5c5e57">NoDi and its neighbors — the emerging micro-geography of the Lower East Side.</div>
+    <div class="map-wrap" id="mapwrap"><div class="panzoom" id="panzoom"><img src="micro-labels-pourteaux.jpg" alt="Map of NoDi and LES micro-neighborhoods" width="1982" height="1484"></div><div class="zoom-ctrl"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">−</button><button type="button" id="zreset" aria-label="Reset zoom" style="font-size:14px">⤾</button></div><div class="map-links"><a class="zoom-open" href="micro-labels-pourteaux.jpg" target="_blank" rel="noopener">Open full res ↗</a><a class="zoom-open" href="https://www.google.com/maps/d/viewer?mid=1zTP-fQb5v-aaspDdec1fTre7M6BmYrg" target="_blank" rel="noopener">Open in Google Maps ↗</a></div><div class="map-wm" aria-hidden="true"><span class="zap">⚡</span> nodi.nyc</div></div>
   </section>
 
   <section class="stk r1 rv" id="founding">
@@ -308,6 +319,7 @@
   <div class="fine" style="margin-top:8px"><a href="https://x.com/pourteaux" target="_blank" rel="noopener">contact</a></div>
 </footer>
 
+<script src="https://unpkg.com/@panzoom/[email protected]/dist/panzoom.min.js"></script>
 <script>
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -322,6 +334,33 @@
       });
     }, { threshold: 0.1 });
     items.forEach(function(e){ io.observe(e); });
+  }
+
+  // map zoom
+  var el = document.getElementById('panzoom');
+  var wrap = document.getElementById('mapwrap');
+  if (el && wrap && window.Panzoom){
+    var pz = Panzoom(el, {
+      maxScale: 6,
+      minScale: 1,
+      contain: 'outside',
+      step: 0.4,
+      animate: true
+    });
+    wrap.addEventListener('wheel', function(ev){
+      if (!ev.shiftKey && !ev.ctrlKey && !ev.metaKey){
+        // require modifier or pinch on desktop to avoid hijacking page scroll
+        return;
+      }
+      pz.zoomWithWheel(ev);
+    });
+    // pinch gestures + drag: panzoom handles automatically
+    wrap.addEventListener('panzoomstart', function(){ wrap.classList.add('grabbing'); });
+    wrap.addEventListener('panzoomend', function(){ wrap.classList.remove('grabbing'); });
+
+    document.getElementById('zin').addEventListener('click', function(){ pz.zoomIn(); });
+    document.getElementById('zout').addEventListener('click', function(){ pz.zoomOut(); });
+    document.getElementById('zreset').addEventListener('click', function(){ pz.reset(); });
   }
 })();
 </script>
